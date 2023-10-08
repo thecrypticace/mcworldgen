@@ -40,12 +40,12 @@ fn try_main() -> std::result::Result<(), io::Error> {
     let home_str = args
         .get(3)
         .unwrap_or(&default_home)
-        .split(",")
+        .split(',')
         .collect_vec(); // .unwrap_or(&"0,0,0".to_owned()).split(",").collect_vec();
     let threshold_str = args
         .get(4)
         .unwrap_or(&default_threshold)
-        .split(",")
+        .split(',')
         .collect_vec();
 
     let home = Point {
@@ -75,10 +75,9 @@ fn try_main() -> std::result::Result<(), io::Error> {
         .into_par_iter()
         .map(|(rx, rz)| {
             let mut file = loader.region(rx, rz).unwrap().unwrap();
-            let scan_result =
-                locate_in_region(block_matcher.clone(), &mut file, rx.0 as i64, rz.0 as i64);
+            
 
-            return scan_result;
+            locate_in_region(block_matcher.clone(), &mut file, rx.0 as i64, rz.0 as i64)
         })
         .filter_map(Option::Some)
         .collect::<Vec<ScanResult>>();
@@ -115,7 +114,7 @@ fn try_main() -> std::result::Result<(), io::Error> {
             y: desc.y,
             z: desc.z,
         };
-        let distance = block_pos.distance_to(&home);
+        let _distance = block_pos.distance_to(&home);
 
         // writeln!(stdout, "  {} at {}, {}, {} -> {} blocks away", desc.name, desc.x, desc.y, desc.z, distance)?;
 
@@ -264,7 +263,7 @@ fn locate_in_region(name: WildMatch, region: &mut Region<File>, rx: i64, rz: i64
         });
 
         let tower = chunk.and_then(|chunk| chunk.sections);
-        if let None = tower {
+        if tower.is_none() {
             continue;
         }
 
@@ -278,7 +277,7 @@ fn locate_in_region(name: WildMatch, region: &mut Region<File>, rx: i64, rz: i64
             let sy = (section.y() as i64) * 16;
             has_non_air = has_non_air || !is_air;
 
-            if let None = iter {
+            if iter.is_none() {
                 continue;
             }
 
@@ -329,7 +328,7 @@ fn locate_in_region(name: WildMatch, region: &mut Region<File>, rx: i64, rz: i64
 }
 
 fn normalize_name(name: &str) -> String {
-    return name
+    name
         .replace("deepslate_", "")
-        .replace("aethersteel:aetherslate_", "minecraft:");
+        .replace("aethersteel:aetherslate_", "minecraft:")
 }

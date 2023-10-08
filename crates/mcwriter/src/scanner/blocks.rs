@@ -44,7 +44,7 @@ impl Ord for BlockDescriptor {
 
 impl PartialOrd for BlockDescriptor {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        return self.cmp(other).into();
+        self.cmp(other).into()
     }
 }
 

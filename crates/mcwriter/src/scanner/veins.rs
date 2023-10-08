@@ -81,12 +81,12 @@ impl Ord for Vein {
 
 impl PartialOrd for Vein {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        return self.cmp(other).into();
+        self.cmp(other).into()
     }
 }
 
 pub fn find_veins(blocks: Vec<BlockDescriptor>) -> impl Iterator<Item = Vein> {
-    let mut blocks = PartitionVec::from_iter(blocks.into_iter());
+    let mut blocks = PartitionVec::from_iter(blocks);
 
     let mut idx_to_pos = HashMap::new();
     let mut pos_to_idx = HashMap::new();
@@ -127,7 +127,6 @@ pub fn find_veins(blocks: Vec<BlockDescriptor>) -> impl Iterator<Item = Vein> {
             Vein::from_iter(vein_blocks.into_iter().map(|(_, b)| b.clone())).with_computed_bounds()
         })
         .filter(|vein| vein.blocks.len() > 1)
-        .into_iter()
         .collect_vec()
         .into_iter()
 }

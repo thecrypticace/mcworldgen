@@ -14,12 +14,12 @@ pub enum Face {
     Back,
 }
 
-impl Into<Point> for i64 {
-    fn into(self) -> Point {
+impl From<i64> for Point {
+    fn from(val: i64) -> Self {
         Point {
-            x: self,
-            y: self,
-            z: self,
+            x: val,
+            y: val,
+            z: val,
         }
     }
 }
@@ -34,13 +34,13 @@ impl Point {
 
         let dist_squared = dx * dx + dy * dy + dz * dz;
 
-        return (dist_squared as f64).sqrt().trunc() as i64;
+        (dist_squared as f64).sqrt().trunc() as i64
     }
 
     pub fn is_near(&self, point: &Point, threshold: &Point) -> bool {
-        return point.x - self.x <= threshold.x
+        point.x - self.x <= threshold.x
             && point.y - self.y <= threshold.y
-            && point.z - self.z <= threshold.z;
+            && point.z - self.z <= threshold.z
     }
 
     pub fn move_toward(&self, face: Face) -> Self {
@@ -62,7 +62,7 @@ impl Point {
 
     // The neighboring positions that would directly touch one of this blocks faces
     pub fn neighbors(&self) -> impl Iterator<Item = Point> {
-        return vec![
+        vec![
             self.move_toward(Face::Top),
             // self.move_toward(Face::Top).move_toward(Face::Left),
             // self.move_toward(Face::Top).move_toward(Face::Left).move_toward(Face::Front),
@@ -90,6 +90,6 @@ impl Point {
             self.move_toward(Face::Front),
             self.move_toward(Face::Back),
         ]
-        .into_iter();
+        .into_iter()
     }
 }
