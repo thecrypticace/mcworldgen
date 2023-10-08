@@ -264,7 +264,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "mcwriter"
+name = "mcworldgen"
 version = "0.1.0"
 dependencies = [
  "crossterm",

@@ -75,7 +75,7 @@ fn try_main() -> std::result::Result<(), io::Error> {
         .into_par_iter()
         .map(|(rx, rz)| {
             let mut file = loader.region(rx, rz).unwrap().unwrap();
-            
+
 
             locate_in_region(block_matcher.clone(), &mut file, rx.0 as i64, rz.0 as i64)
         })
@@ -155,8 +155,8 @@ fn try_main() -> std::result::Result<(), io::Error> {
             let b_count = b.blocks.len();
 
             Ordering::Equal
-                .then_with(|| b_count.cmp(&a_count))
                 .then_with(|| a_dist.cmp(&b_dist))
+                .then_with(|| b_count.cmp(&a_count))
         })
         .enumerate()
     {
@@ -329,6 +329,9 @@ fn locate_in_region(name: WildMatch, region: &mut Region<File>, rx: i64, rz: i64
 
 fn normalize_name(name: &str) -> String {
     name
+        .trim_end_matches("_stone")
+        .trim_end_matches("_kivi")
+        .trim_end_matches("_deepslate")
         .replace("deepslate_", "")
         .replace("aethersteel:aetherslate_", "minecraft:")
 }
